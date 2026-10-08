@@ -38,23 +38,28 @@ jobs:
 
       - name: Build Plugin ZIP
         run: |
-          mkdir -p build/kkhay-woocommerce
-          cp -r assets includes languages kkhay-woocommerce.php readme.txt README.md LICENSE build/kkhay-woocommerce/
+          mkdir -p build/kkhay
+          cp -r assets includes languages kkhay.php readme.txt README.md LICENSE build/kkhay/
           cd build
-          zip -r ../kkhay-woocommerce.zip kkhay-woocommerce/
+          zip -r ../kkhay.zip kkhay/
           cd ..
-          ls -lh kkhay-woocommerce.zip
+          cp kkhay.zip kkhay-woocommerce.zip
+          ls -lh kkhay.zip kkhay-woocommerce.zip
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: kkhay-woocommerce-zip
-          path: kkhay-woocommerce.zip
+          name: kkhay-plugin-zip
+          path: |
+            kkhay.zip
+            kkhay-woocommerce.zip
 
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: kkhay-woocommerce.zip
+          files: |
+            kkhay.zip
+            kkhay-woocommerce.zip
           generate_release_notes: true
 

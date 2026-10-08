@@ -1,4 +1,4 @@
-=== K Khay Sovereign Crypto Gateway for WooCommerce ===
+=== K Khay – Crypto Payments for WooCommerce (USDT, USDC, BNB, ETH) ===
 Contributors: boboaungdev, kkhay
 Donate link: https://kkhay.com
 Tags: crypto, payment gateway, woocommerce, usdt, usdc, bnb, ethereum, bitcoin, bsc, polygon, arbitrum, base
@@ -13,7 +13,7 @@ Accept non-custodial and custodial crypto payments (USDT, USDC, BNB, ETH on BSC,
 
 == Description ==
 
-**K Khay Sovereign Crypto Gateway for WooCommerce** is the official payment gateway for **[K Khay](https://kkhay.com)**.
+**K Khay – Crypto Payments for WooCommerce** is the official payment gateway for **[K Khay](https://kkhay.com)**.
 
 Accept payments directly to your wallet in stablecoins and popular cryptocurrencies with **zero chargebacks**, **instant on-chain verification**, and **frictionless checkout**.
 
@@ -30,7 +30,7 @@ Accept payments directly to your wallet in stablecoins and popular cryptocurrenc
 
 == Installation ==
 
-1. Upload the `kkhay-woocommerce` folder to the `/wp-content/plugins/` directory, or upload the `kkhay-woocommerce.zip` file directly via **Plugins &rarr; Add New &rarr; Upload Plugin** in your WordPress admin.
+1. Upload the `kkhay` folder to the `/wp-content/plugins/` directory, or upload `kkhay.zip` directly via **Plugins &rarr; Add New &rarr; Upload Plugin** in your WordPress admin.
 2. Activate the plugin through the **Plugins** menu in WordPress.
 3. Navigate to **WooCommerce &rarr; Settings &rarr; Payments**.
 4. Click on **K Khay Crypto Gateway** to configure settings.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: K Khay Sovereign Crypto Gateway for WooCommerce
+ * Plugin Name: K Khay – Crypto Payments for WooCommerce (USDT, USDC, BNB, ETH)
  * Plugin URI: https://kkhay.com
  * Description: Accept non-custodial and custodial crypto payments (USDT, USDC, BNB, ETH on BSC, Polygon, Arbitrum, Base, Ethereum) directly in your WooCommerce store with zero chargebacks.
  * Version: 1.0.0
@@ -8,24 +8,30 @@
  * Author URI: https://github.com/boboaungdev
  * License: MIT
  * License URI: https://opensource.org/licenses/MIT
- * Text Domain: kkhay-woocommerce
+ * Text Domain: kkhay
  * Domain Path: /languages
  * Requires at least: 5.8
  * Requires PHP: 7.4
  * WC requires at least: 5.0
  * WC tested up to: 9.3
  *
- * @package Kkhay_WooCommerce
+ * @package Kkhay
  */
 
 if (!defined('ABSPATH')) {
     exit;
 }
 
-define('KKHAY_WOOCOMMERCE_VERSION', '1.0.0');
-define('KKHAY_WOOCOMMERCE_PLUGIN_FILE', __FILE__);
-define('KKHAY_WOOCOMMERCE_PLUGIN_PATH', plugin_dir_path(__FILE__));
-define('KKHAY_WOOCOMMERCE_PLUGIN_URL', plugin_dir_url(__FILE__));
+define('KKHAY_VERSION', '1.0.0');
+define('KKHAY_PLUGIN_FILE', __FILE__);
+define('KKHAY_PLUGIN_PATH', plugin_dir_path(__FILE__));
+define('KKHAY_PLUGIN_URL', plugin_dir_url(__FILE__));
+
+// Backward compatibility constants
+define('KKHAY_WOOCOMMERCE_VERSION', KKHAY_VERSION);
+define('KKHAY_WOOCOMMERCE_PLUGIN_FILE', KKHAY_PLUGIN_FILE);
+define('KKHAY_WOOCOMMERCE_PLUGIN_PATH', KKHAY_PLUGIN_PATH);
+define('KKHAY_WOOCOMMERCE_PLUGIN_URL', KKHAY_PLUGIN_URL);
 
 /**
  * Declare HPOS (High-Performance Order Storage) and Blocks compatibility.
@@ -61,7 +67,7 @@ function kkhay_woocommerce_init(): void
     add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'kkhay_woocommerce_plugin_action_links');
 
     // Load text domain for translations
-    load_plugin_textdomain('kkhay-woocommerce', false, dirname(plugin_basename(__FILE__)) . '/languages');
+    load_plugin_textdomain('kkhay', false, dirname(plugin_basename(__FILE__)) . '/languages');
 }
 
 /**
