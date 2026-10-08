@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: K Khay
+ * Plugin Name: Kkhay
  * Plugin URI: https://kkhay.com
  * Description: Accept non-custodial and custodial crypto payments (USDT, USDC, BNB, ETH on BSC, Polygon, Arbitrum, Base, Ethereum) directly in your store with zero chargebacks.
  * Version: 1.0.0

@@ -40,6 +40,7 @@ jobs:
         run: |
           mkdir -p build/kkhay languages
           cp -r assets includes languages kkhay.php readme.txt README.md LICENSE build/kkhay/
+          find build/kkhay -name ".*" -delete
           cd build
           zip -r ../kkhay.zip kkhay/
           cd ..

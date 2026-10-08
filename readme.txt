@@ -1,9 +1,9 @@
-=== K Khay ===
+=== Kkhay ===
 Contributors: boboaungdev, kkhay
 Donate link: https://kkhay.com
 Tags: crypto, payment gateway, woocommerce, usdt, usdc, bnb, ethereum, bitcoin, bsc, polygon, arbitrum, base
 Requires at least: 5.8
-Tested up to: 6.7
+Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 1.0.0
 License: MIT
