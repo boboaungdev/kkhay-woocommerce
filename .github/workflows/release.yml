@@ -43,23 +43,18 @@ jobs:
           cd build
           zip -r ../kkhay.zip kkhay/
           cd ..
-          cp kkhay.zip kkhay-woocommerce.zip
-          ls -lh kkhay.zip kkhay-woocommerce.zip
+          ls -lh kkhay.zip
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: kkhay-plugin-zip
-          path: |
-            kkhay.zip
-            kkhay-woocommerce.zip
+          name: kkhay-zip
+          path: kkhay.zip
 
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            kkhay.zip
-            kkhay-woocommerce.zip
+          files: kkhay.zip
           generate_release_notes: true
 
