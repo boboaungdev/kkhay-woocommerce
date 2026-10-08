@@ -1,0 +1,26 @@
+# Operating System
+.DS_Store
+Thumbs.db
+
+# Editor & IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Composer
+vendor/
+composer.lock
+
+# Build archives
+*.zip
+*.tar.gz
+
+# Node / NPM
+node_modules/
+npm-debug.log
+
+# WordPress logs
+*.log
+wp-content/
+
