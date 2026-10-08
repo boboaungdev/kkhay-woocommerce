@@ -38,7 +38,7 @@ jobs:
 
       - name: Build Plugin ZIP
         run: |
-          mkdir -p build/kkhay
+          mkdir -p build/kkhay languages
           cp -r assets includes languages kkhay.php readme.txt README.md LICENSE build/kkhay/
           cd build
           zip -r ../kkhay.zip kkhay/
