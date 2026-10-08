@@ -1,4 +1,4 @@
-=== K Khay – Crypto Payments for WooCommerce (USDT, USDC, BNB, ETH) ===
+=== K Khay ===
 Contributors: boboaungdev, kkhay
 Donate link: https://kkhay.com
 Tags: crypto, payment gateway, woocommerce, usdt, usdc, bnb, ethereum, bitcoin, bsc, polygon, arbitrum, base
@@ -9,11 +9,11 @@ Stable tag: 1.0.0
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
-Accept non-custodial and custodial crypto payments (USDT, USDC, BNB, ETH on BSC, Polygon, Arbitrum, Base, Ethereum) in WooCommerce.
+Accept non-custodial and custodial crypto payments (USDT, USDC, BNB, ETH on BSC, Polygon, Arbitrum, Base, Ethereum) in your store.
 
 == Description ==
 
-**K Khay – Crypto Payments for WooCommerce** is the official payment gateway for **[K Khay](https://kkhay.com)**.
+**K Khay** is the official payment gateway for **[K Khay](https://kkhay.com)**.
 
 Accept payments directly to your wallet in stablecoins and popular cryptocurrencies with **zero chargebacks**, **instant on-chain verification**, and **frictionless checkout**.
 

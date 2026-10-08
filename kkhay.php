@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: K Khay – Crypto Payments for WooCommerce (USDT, USDC, BNB, ETH)
+ * Plugin Name: K Khay
  * Plugin URI: https://kkhay.com
- * Description: Accept non-custodial and custodial crypto payments (USDT, USDC, BNB, ETH on BSC, Polygon, Arbitrum, Base, Ethereum) directly in your WooCommerce store with zero chargebacks.
+ * Description: Accept non-custodial and custodial crypto payments (USDT, USDC, BNB, ETH on BSC, Polygon, Arbitrum, Base, Ethereum) directly in your store with zero chargebacks.
  * Version: 1.0.0
  * Author: Bo Bo
  * Author URI: https://github.com/boboaungdev
