@@ -45,7 +45,7 @@ class WC_Kkhay_API
     public function request(string $path, string $method = 'GET', ?array $body = null): array
     {
         if (empty($this->api_key)) {
-            throw new Exception(__('K Khay API Key is missing. Please configure your API key in WooCommerce settings.', 'kkhay-woocommerce'));
+            throw new Exception(__('K Khay API Key is missing. Please configure your API key in WooCommerce settings.', 'kkhay'));
         }
 
         $url = $this->get_endpoint_url($path);
@@ -53,7 +53,7 @@ class WC_Kkhay_API
         $headers = [
             'Accept'       => 'application/json',
             'x-api-key'    => $this->api_key,
-            'User-Agent'   => 'kkhay-woocommerce/1.0.0 (WordPress/' . get_bloginfo('version') . '; WooCommerce/' . (defined('WC_VERSION') ? WC_VERSION : 'unknown') . ')',
+            'User-Agent'   => 'kkhay/1.0.0 (WordPress/' . get_bloginfo('version') . '; WooCommerce/' . (defined('WC_VERSION') ? WC_VERSION : 'unknown') . ')',
         ];
 
         $args = [
@@ -75,7 +75,7 @@ class WC_Kkhay_API
             $logger = wc_get_logger();
             $logger->debug(
                 sprintf('K Khay API Request: %s %s | Body: %s', $method, $url, wp_json_encode($body)),
-                ['source' => 'kkhay-woocommerce']
+                ['source' => 'kkhay']
             );
         }
 
@@ -84,9 +84,9 @@ class WC_Kkhay_API
         if (is_wp_error($response)) {
             $error_message = $response->get_error_message();
             if ($this->debug && function_exists('wc_get_logger')) {
-                wc_get_logger()->error('K Khay Network Error: ' . $error_message, ['source' => 'kkhay-woocommerce']);
+                wc_get_logger()->error('K Khay Network Error: ' . $error_message, ['source' => 'kkhay']);
             }
-            throw new Exception(sprintf(__('Network error communicating with K Khay: %s', 'kkhay-woocommerce'), $error_message));
+            throw new Exception(sprintf(__('Network error communicating with K Khay: %s', 'kkhay'), $error_message));
         }
 
         $status_code = wp_remote_retrieve_response_code($response);
@@ -96,13 +96,13 @@ class WC_Kkhay_API
         if ($this->debug && function_exists('wc_get_logger')) {
             wc_get_logger()->debug(
                 sprintf('K Khay API Response [%d]: %s', $status_code, $raw_body),
-                ['source' => 'kkhay-woocommerce']
+                ['source' => 'kkhay']
             );
         }
 
         if ($status_code >= 400) {
             $msg = is_array($decoded) ? ($decoded['message'] ?? $decoded['error'] ?? 'API error') : $raw_body;
-            throw new Exception(sprintf(__('K Khay API error (%d): %s', 'kkhay-woocommerce'), $status_code, $msg));
+            throw new Exception(sprintf(__('K Khay API error (%d): %s', 'kkhay'), $status_code, $msg));
         }
 
         return is_array($decoded) ? $decoded : ['data' => $raw_body];

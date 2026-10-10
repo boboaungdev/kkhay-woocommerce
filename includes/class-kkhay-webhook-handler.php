@@ -130,7 +130,7 @@ class WC_Kkhay_Webhook_Handler
         $amount    = $data['payAmount'] ?? $data['pay_amount'] ?? '';
 
         $note = sprintf(
-            __('K Khay: Payment confirmed via %s on %s. Amount: %s %s.', 'kkhay-woocommerce'),
+            __('K Khay: Payment confirmed via %s on %s. Amount: %s %s.', 'kkhay'),
             strtoupper($pay_token),
             strtoupper($network),
             $amount,
@@ -138,7 +138,7 @@ class WC_Kkhay_Webhook_Handler
         );
 
         if (!empty($tx_hash)) {
-            $note .= ' ' . sprintf(__('Tx Hash: %s', 'kkhay-woocommerce'), $tx_hash);
+            $note .= ' ' . sprintf(__('Tx Hash: %s', 'kkhay'), $tx_hash);
             $order->update_meta_data('_kkhay_tx_hash', $tx_hash);
         }
 
@@ -147,7 +147,7 @@ class WC_Kkhay_Webhook_Handler
         $target_status = $this->gateway->get_completed_order_status();
         if ($target_status === 'completed') {
             $order->payment_complete($tx_hash);
-            $order->update_status('completed', __('Order auto-completed after crypto settlement.', 'kkhay-woocommerce'));
+            $order->update_status('completed', __('Order auto-completed after crypto settlement.', 'kkhay'));
         } else {
             $order->payment_complete($tx_hash);
         }
@@ -158,7 +158,7 @@ class WC_Kkhay_Webhook_Handler
     private function handle_expired(WC_Order $order, array $data): void
     {
         if ($order->has_status(['pending', 'on-hold'])) {
-            $order->update_status('cancelled', __('K Khay: Crypto invoice expired without payment.', 'kkhay-woocommerce'));
+            $order->update_status('cancelled', __('K Khay: Crypto invoice expired without payment.', 'kkhay'));
             $this->gateway->log(sprintf('Order #%d marked cancelled (invoice expired).', $order->get_id()));
         }
     }
@@ -166,7 +166,7 @@ class WC_Kkhay_Webhook_Handler
     private function handle_cancelled(WC_Order $order, array $data): void
     {
         if ($order->has_status(['pending', 'on-hold'])) {
-            $order->update_status('cancelled', __('K Khay: Invoice was cancelled.', 'kkhay-woocommerce'));
+            $order->update_status('cancelled', __('K Khay: Invoice was cancelled.', 'kkhay'));
             $this->gateway->log(sprintf('Order #%d marked cancelled.', $order->get_id()));
         }
     }
@@ -176,7 +176,7 @@ class WC_Kkhay_Webhook_Handler
         $paid   = $data['payAmount'] ?? $data['paidAmount'] ?? '0';
         $token  = $data['payToken'] ?? '';
         $order->add_order_note(sprintf(
-            __('K Khay Alert: Underpayment detected. Customer paid %s %s. Please check with customer before fulfilling.', 'kkhay-woocommerce'),
+            __('K Khay Alert: Underpayment detected. Customer paid %s %s. Please check with customer before fulfilling.', 'kkhay'),
             $paid,
             strtoupper($token)
         ));

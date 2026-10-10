@@ -1,7 +1,7 @@
 === Kkhay ===
 Contributors: boboaungdev, kkhay
 Donate link: https://kkhay.com
-Tags: crypto, payment gateway, woocommerce, usdt, usdc, bnb, ethereum, bitcoin, bsc, polygon, arbitrum, base
+Tags: crypto, payment gateway, woocommerce, usdt, usdc
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 7.4
@@ -27,6 +27,17 @@ Accept payments directly to your wallet in stablecoins and popular cryptocurrenc
 * **High-Performance Order Storage (HPOS)**: 100% compatible with modern WooCommerce HPOS database tables and Gutenberg Checkout Blocks.
 * **Partial Payment Detection**: Flags underpaid orders to alert store administrators before fulfillment.
 * **Self-Hosted Gateway Friendly**: Fully configurable base URL allows connecting to your private self-hosted K Khay gateway instance or the cloud gateway.
+
+== External Services ==
+
+This plugin relies on an external service — the **K Khay Payment Gateway API** (`https://api.kkhay.com` or your configured self-hosted gateway instance) — to create cryptocurrency payment invoices, track real-time blockchain settlement, and verify payment webhook signatures.
+
+* **What the service is**: K Khay Sovereign Crypto Gateway provides non-custodial cryptocurrency checkout processing (USDT, USDC, BNB, ETH on BSC, Polygon, Arbitrum, Base, and Ethereum).
+* **What data is sent**: When a customer selects K Khay at checkout and places an order, the plugin transmits order details including the order ID, payment amount, currency, return/cancel URLs, and your merchant API credentials to initiate the checkout session. Sensitive customer payment credentials (such as credit card numbers or private keys) are never requested, stored, or transmitted.
+* **When data is sent**: Data is transmitted when a customer initiates payment at checkout, when invoice status is queried, and when receiving webhook payment callbacks.
+* **Service Provider**: K Khay ([https://kkhay.com](https://kkhay.com))
+* **Terms of Service**: [https://kkhay.com/terms](https://kkhay.com/terms)
+* **Privacy Policy**: [https://kkhay.com/privacy](https://kkhay.com/privacy)
 
 == Installation ==
 
@@ -59,4 +70,3 @@ You can generate your merchant API keys and IPN webhook secret from your [K Khay
 * Support for USDT, USDC, BNB, ETH on BSC, Polygon, Arbitrum, Base, and Ethereum.
 * Full compatibility with WooCommerce HPOS and Blocks Checkout.
 * HMAC-SHA256 cryptographic webhook verification.
-

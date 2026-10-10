@@ -19,16 +19,16 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
         $this->id                 = 'kkhay';
         $this->icon               = apply_filters('woocommerce_kkhay_icon', KKHAY_WOOCOMMERCE_PLUGIN_URL . 'assets/images/kkhay-badge.svg');
         $this->has_fields         = false;
-        $this->method_title       = __('K Khay Crypto Gateway', 'kkhay-woocommerce');
-        $this->method_description = __('Accept sovereign, non-custodial crypto payments (USDT, USDC, BNB, ETH on BSC, Polygon, Arbitrum, Base, Ethereum) directly to your self-hosted or custodial K Khay gateway.', 'kkhay-woocommerce');
+        $this->method_title       = __('K Khay Crypto Gateway', 'kkhay');
+        $this->method_description = __('Accept sovereign, non-custodial crypto payments (USDT, USDC, BNB, ETH on BSC, Polygon, Arbitrum, Base, Ethereum) directly to your self-hosted or custodial K Khay gateway.', 'kkhay');
 
         // Load settings
         $this->init_form_fields();
         $this->init_settings();
 
         // Assign user configuration properties
-        $this->title               = $this->get_option('title', __('Crypto (USDT, USDC, BNB, ETH via K Khay)', 'kkhay-woocommerce'));
-        $this->description         = $this->get_option('description', __('Pay securely with cryptocurrency across multiple blockchains. Fast, zero chargebacks, and instant confirmation.', 'kkhay-woocommerce'));
+        $this->title               = $this->get_option('title', __('Crypto (USDT, USDC, BNB, ETH via K Khay)', 'kkhay'));
+        $this->description         = $this->get_option('description', __('Pay securely with cryptocurrency across multiple blockchains. Fast, zero chargebacks, and instant confirmation.', 'kkhay'));
         $this->enabled             = $this->get_option('enabled', 'no');
         $this->api_key             = $this->get_option('api_key', '');
         $this->ipn_secret          = $this->get_option('ipn_secret', '');
@@ -54,70 +54,70 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
 
         $this->form_fields = [
             'enabled' => [
-                'title'       => __('Enable/Disable', 'kkhay-woocommerce'),
+                'title'       => __('Enable/Disable', 'kkhay'),
                 'type'        => 'checkbox',
-                'label'       => __('Enable K Khay Crypto Payment Gateway', 'kkhay-woocommerce'),
+                'label'       => __('Enable K Khay Crypto Payment Gateway', 'kkhay'),
                 'default'     => 'no',
             ],
             'title' => [
-                'title'       => __('Title', 'kkhay-woocommerce'),
+                'title'       => __('Title', 'kkhay'),
                 'type'        => 'text',
-                'description' => __('Payment method title displayed to customers during checkout.', 'kkhay-woocommerce'),
-                'default'     => __('Crypto (USDT, USDC, BNB, ETH via K Khay)', 'kkhay-woocommerce'),
+                'description' => __('Payment method title displayed to customers during checkout.', 'kkhay'),
+                'default'     => __('Crypto (USDT, USDC, BNB, ETH via K Khay)', 'kkhay'),
                 'desc_tip'    => true,
             ],
             'description' => [
-                'title'       => __('Description', 'kkhay-woocommerce'),
+                'title'       => __('Description', 'kkhay'),
                 'type'        => 'textarea',
-                'description' => __('Payment method description displayed to customers during checkout.', 'kkhay-woocommerce'),
-                'default'     => __('Pay securely with cryptocurrency across multiple blockchains. Fast, zero chargebacks, and instant settlement.', 'kkhay-woocommerce'),
+                'description' => __('Payment method description displayed to customers during checkout.', 'kkhay'),
+                'default'     => __('Pay securely with cryptocurrency across multiple blockchains. Fast, zero chargebacks, and instant settlement.', 'kkhay'),
             ],
             'api_key' => [
-                'title'       => __('Merchant API Key', 'kkhay-woocommerce'),
+                'title'       => __('Merchant API Key', 'kkhay'),
                 'type'        => 'password',
-                'description' => __('Your secret merchant API key (starts with kkhay_live_ or kkhay_test_). Retrieve from your K Khay dashboard.', 'kkhay-woocommerce'),
+                'description' => __('Your secret merchant API key (starts with kkhay_live_ or kkhay_test_). Retrieve from your K Khay dashboard.', 'kkhay'),
                 'default'     => '',
                 'desc_tip'    => true,
             ],
             'ipn_secret' => [
-                'title'       => __('Webhook / IPN Secret', 'kkhay-woocommerce'),
+                'title'       => __('Webhook / IPN Secret', 'kkhay'),
                 'type'        => 'password',
-                'description' => __('Secret key used to verify HMAC-SHA256 signatures of incoming payment notifications.', 'kkhay-woocommerce'),
+                'description' => __('Secret key used to verify HMAC-SHA256 signatures of incoming payment notifications.', 'kkhay'),
                 'default'     => '',
                 'desc_tip'    => true,
             ],
             'base_url' => [
-                'title'       => __('Gateway API Base URL', 'kkhay-woocommerce'),
+                'title'       => __('Gateway API Base URL', 'kkhay'),
                 'type'        => 'text',
-                'description' => __('Default is https://api.kkhay.com. Override only if self-hosting your K Khay gateway instance.', 'kkhay-woocommerce'),
+                'description' => __('Default is https://api.kkhay.com. Override only if self-hosting your K Khay gateway instance.', 'kkhay'),
                 'default'     => 'https://api.kkhay.com',
                 'desc_tip'    => true,
             ],
             'order_status_paid' => [
-                'title'       => __('Order Status on Payment', 'kkhay-woocommerce'),
+                'title'       => __('Order Status on Payment', 'kkhay'),
                 'type'        => 'select',
-                'description' => __('Status assigned to the order once crypto payment is confirmed on-chain.', 'kkhay-woocommerce'),
+                'description' => __('Status assigned to the order once crypto payment is confirmed on-chain.', 'kkhay'),
                 'default'     => 'processing',
                 'options'     => [
-                    'processing' => __('Processing (Recommended for physical goods)', 'kkhay-woocommerce'),
-                    'completed'  => __('Completed (Ideal for digital / downloadable items)', 'kkhay-woocommerce'),
+                    'processing' => __('Processing (Recommended for physical goods)', 'kkhay'),
+                    'completed'  => __('Completed (Ideal for digital / downloadable items)', 'kkhay'),
                 ],
             ],
             'webhook_url_info' => [
-                'title'       => __('Instant Payment Notification (IPN) URL', 'kkhay-woocommerce'),
+                'title'       => __('Instant Payment Notification (IPN) URL', 'kkhay'),
                 'type'        => 'title',
                 'description' => sprintf(
                     /* translators: %s: webhook url */
-                    __('Copy and paste this URL into your K Khay Merchant Dashboard under Webhook Settings:<br><code>%s</code>', 'kkhay-woocommerce'),
+                    __('Copy and paste this URL into your K Khay Merchant Dashboard under Webhook Settings:<br><code>%s</code>', 'kkhay'),
                     esc_url($webhook_url)
                 ),
             ],
             'debug' => [
-                'title'       => __('Debug Logging', 'kkhay-woocommerce'),
+                'title'       => __('Debug Logging', 'kkhay'),
                 'type'        => 'checkbox',
-                'label'       => __('Log API requests and webhook events to WooCommerce Status Logs', 'kkhay-woocommerce'),
+                'label'       => __('Log API requests and webhook events to WooCommerce Status Logs', 'kkhay'),
                 'default'     => 'no',
-                'description' => __('Logs can be viewed in WooCommerce &rarr; Status &rarr; Logs.', 'kkhay-woocommerce'),
+                'description' => __('Logs can be viewed in WooCommerce &rarr; Status &rarr; Logs.', 'kkhay'),
             ],
         ];
     }
@@ -148,7 +148,7 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
     {
         if (is_checkout() || is_checkout_pay_page()) {
             wp_enqueue_style(
-                'kkhay-woocommerce',
+                'kkhay',
                 KKHAY_WOOCOMMERCE_PLUGIN_URL . 'assets/css/kkhay.css',
                 [],
                 KKHAY_WOOCOMMERCE_VERSION
@@ -166,7 +166,7 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
     {
         $order = wc_get_order($order_id);
         if (!$order) {
-            wc_add_notice(__('Unable to find order. Please try again.', 'kkhay-woocommerce'), 'error');
+            wc_add_notice(__('Unable to find order. Please try again.', 'kkhay'), 'error');
             return ['result' => 'fail'];
         }
 
@@ -182,8 +182,8 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
                 'priceAmount'   => $amount,
                 'priceCurrency' => strtoupper($currency),
                 'orderId'       => (string) $order->get_id(),
-                'title'         => sprintf(__('Order #%s on %s', 'kkhay-woocommerce'), $order->get_order_number(), get_bloginfo('name')),
-                'description'   => sprintf(__('Payment for order #%s (%d item(s))', 'kkhay-woocommerce'), $order->get_order_number(), $order->get_item_count()),
+                'title'         => sprintf(__('Order #%s on %s', 'kkhay'), $order->get_order_number(), get_bloginfo('name')),
+                'description'   => sprintf(__('Payment for order #%s (%d item(s))', 'kkhay'), $order->get_order_number(), $order->get_item_count()),
                 'redirectUrl'   => $return_url,
                 'cancelUrl'     => $cancel_url,
                 'ipnUrl'        => $webhook_url,
@@ -205,7 +205,7 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
             $hosted_url = $invoice['hostedUrl'] ?? $invoice['hosted_url'] ?? $invoice['checkoutUrl'] ?? null;
 
             if (empty($invoice_id) || empty($hosted_url)) {
-                throw new Exception(__('Invalid invoice response received from K Khay gateway.', 'kkhay-woocommerce'));
+                throw new Exception(__('Invalid invoice response received from K Khay gateway.', 'kkhay'));
             }
 
             // Store metadata on order
@@ -214,7 +214,7 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
             $order->save();
 
             // Set order status to pending payment
-            $order->update_status('pending', sprintf(__('Awaiting K Khay crypto payment. Invoice ID: %s', 'kkhay-woocommerce'), $invoice_id));
+            $order->update_status('pending', sprintf(__('Awaiting K Khay crypto payment. Invoice ID: %s', 'kkhay'), $invoice_id));
 
             // Reduce cart stock
             wc_reduce_stock_levels($order->get_id());
@@ -230,7 +230,7 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
             ];
         } catch (Exception $e) {
             $this->log('Payment error: ' . $e->getMessage(), 'error');
-            wc_add_notice(sprintf(__('Payment failed: %s', 'kkhay-woocommerce'), $e->getMessage()), 'error');
+            wc_add_notice(sprintf(__('Payment failed: %s', 'kkhay'), $e->getMessage()), 'error');
             return ['result' => 'fail'];
         }
     }
@@ -260,7 +260,7 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
     public function log(string $message, string $level = 'info'): void
     {
         if ($this->debug && function_exists('wc_get_logger')) {
-            wc_get_logger()->log($level, $message, ['source' => 'kkhay-woocommerce']);
+            wc_get_logger()->log($level, $message, ['source' => 'kkhay']);
         }
     }
 }

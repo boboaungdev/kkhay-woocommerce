@@ -65,9 +65,6 @@ function kkhay_woocommerce_init(): void
 
     // Register action links on plugins page
     add_filter('plugin_action_links_' . plugin_basename(__FILE__), 'kkhay_woocommerce_plugin_action_links');
-
-    // Load text domain for translations
-    load_plugin_textdomain('kkhay', false, dirname(plugin_basename(__FILE__)) . '/languages');
 }
 
 /**
@@ -111,7 +108,7 @@ function kkhay_woocommerce_plugin_action_links(array $links): array
     $settings_link = sprintf(
         '<a href="%s">%s</a>',
         esc_url(admin_url('admin.php?page=wc-settings&tab=checkout&section=kkhay')),
-        __('Settings', 'kkhay-woocommerce')
+        __('Settings', 'kkhay')
     );
     array_unshift($links, $settings_link);
     return $links;
@@ -123,7 +120,8 @@ function kkhay_woocommerce_plugin_action_links(array $links): array
 function kkhay_woocommerce_missing_wc_notice(): void
 {
     echo '<div class="notice notice-error"><p>' .
-        esc_html__('K Khay Sovereign Crypto Gateway requires WooCommerce to be installed and active.', 'kkhay-woocommerce') .
+        esc_html__('K Khay Sovereign Crypto Gateway requires WooCommerce to be installed and active.', 'kkhay') .
         '</p></div>';
 }
+
 

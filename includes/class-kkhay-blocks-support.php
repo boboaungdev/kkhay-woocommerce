@@ -36,8 +36,8 @@ final class WC_Kkhay_Blocks_Support extends AbstractPaymentMethodType
     public function get_payment_method_data(): array
     {
         return [
-            'title'       => $this->get_setting('title', __('Crypto (USDT, USDC, BNB, ETH via K Khay)', 'kkhay-woocommerce')),
-            'description' => $this->get_setting('description', __('Pay securely with cryptocurrency across multiple blockchains.', 'kkhay-woocommerce')),
+            'title'       => $this->get_setting('title', __('Crypto (USDT, USDC, BNB, ETH via K Khay)', 'kkhay')),
+            'description' => $this->get_setting('description', __('Pay securely with cryptocurrency across multiple blockchains.', 'kkhay')),
             'icon'        => KKHAY_WOOCOMMERCE_PLUGIN_URL . 'assets/images/kkhay-badge.svg',
             'supports'    => ['products'],
         ];
