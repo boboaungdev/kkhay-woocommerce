@@ -11,16 +11,16 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-final class WC_Kkhay_Blocks_Support extends AbstractPaymentMethodType
+final class Kkhay_Blocks_Support extends AbstractPaymentMethodType
 {
     protected $name = 'kkhay';
-    private WC_Gateway_Kkhay $gateway;
+    private $gateway;
 
     public function initialize(): void
     {
         $this->settings = get_option('woocommerce_kkhay_settings', []);
         $gateways       = WC()->payment_gateways->payment_gateways();
-        $this->gateway  = $gateways['kkhay'] ?? new WC_Gateway_Kkhay();
+        $this->gateway  = $gateways['kkhay'] ?? new Kkhay_WC_Gateway();
     }
 
     public function is_active(): bool
@@ -44,3 +44,7 @@ final class WC_Kkhay_Blocks_Support extends AbstractPaymentMethodType
     }
 }
 
+// Backward compatibility alias
+if (!class_exists('WC_Kkhay_Blocks_Support')) {
+    class_alias('Kkhay_Blocks_Support', 'WC_Kkhay_Blocks_Support');
+}

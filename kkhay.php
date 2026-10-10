@@ -10,7 +10,7 @@
  * License URI: https://opensource.org/licenses/MIT
  * Text Domain: kkhay
  * Domain Path: /languages
- * Requires at least: 5.8
+ * Requires at least: 6.0
  * Requires PHP: 7.4
  * WC requires at least: 5.0
  * WC tested up to: 9.3
@@ -75,7 +75,7 @@ function kkhay_woocommerce_init(): void
  */
 function kkhay_woocommerce_add_gateway(array $gateways): array
 {
-    $gateways[] = 'WC_Gateway_Kkhay';
+    $gateways[] = 'Kkhay_WC_Gateway';
     return $gateways;
 }
 
@@ -92,7 +92,7 @@ add_action('woocommerce_blocks_loaded', function () {
     add_action(
         'woocommerce_blocks_payment_method_type_registration',
         function (\Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $registry) {
-            $registry->register(new WC_Kkhay_Blocks_Support());
+            $registry->register(new Kkhay_Blocks_Support());
         }
     );
 });
@@ -123,5 +123,3 @@ function kkhay_woocommerce_missing_wc_notice(): void
         esc_html__('K Khay Sovereign Crypto Gateway requires WooCommerce to be installed and active.', 'kkhay') .
         '</p></div>';
 }
-
-

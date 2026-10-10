@@ -9,11 +9,16 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_Kkhay_Webhook_Handler
+class Kkhay_Webhook_Handler
 {
-    private WC_Gateway_Kkhay $gateway;
+    /**
+     * Gateway instance.
+     *
+     * @var object
+     */
+    private $gateway;
 
-    public function __construct(WC_Gateway_Kkhay $gateway)
+    public function __construct($gateway)
     {
         $this->gateway = $gateway;
     }
@@ -24,7 +29,13 @@ class WC_Kkhay_Webhook_Handler
     public function handle(): void
     {
         $raw_body  = file_get_contents('php://input');
-        $signature = $_SERVER['HTTP_X_KKHAY_SIGNATURE'] ?? $_SERVER['HTTP_X_SIGNATURE'] ?? '';
+        $signature = '';
+
+        if (isset($_SERVER['HTTP_X_KKHAY_SIGNATURE'])) {
+            $signature = sanitize_text_field(wp_unslash($_SERVER['HTTP_X_KKHAY_SIGNATURE']));
+        } elseif (isset($_SERVER['HTTP_X_SIGNATURE'])) {
+            $signature = sanitize_text_field(wp_unslash($_SERVER['HTTP_X_SIGNATURE']));
+        }
 
         if (empty($raw_body)) {
             $this->respond(400, 'Empty payload');
@@ -77,12 +88,14 @@ class WC_Kkhay_Webhook_Handler
         }
 
         if (!$order && !empty($invoice_id)) {
+            // phpcs:disable WordPress.DB.SlowDBQuery.slow_db_query_meta_key, WordPress.DB.SlowDBQuery.slow_db_query_meta_value
             $orders = wc_get_orders([
                 'limit'        => 1,
                 'meta_key'     => '_kkhay_invoice_id',
-                'meta_value'   => $invoice_id,
+                'meta_value'   => sanitize_text_field($invoice_id),
                 'meta_compare' => '=',
             ]);
+            // phpcs:enable WordPress.DB.SlowDBQuery.slow_db_query_meta_key, WordPress.DB.SlowDBQuery.slow_db_query_meta_value
             if (!empty($orders)) {
                 $order = $orders[0];
             }
@@ -129,16 +142,12 @@ class WC_Kkhay_Webhook_Handler
         $network   = $data['payNetwork'] ?? $data['pay_network'] ?? '';
         $amount    = $data['payAmount'] ?? $data['pay_amount'] ?? '';
 
-        $note = sprintf(
-            __('K Khay: Payment confirmed via %s on %s. Amount: %s %s.', 'kkhay'),
-            strtoupper($pay_token),
-            strtoupper($network),
-            $amount,
-            strtoupper($pay_token)
-        );
+        /* translators: 1: Token symbol, 2: Blockchain network, 3: Amount, 4: Token symbol */
+        $note = sprintf(esc_html__('K Khay: Payment confirmed via %1$s on %2$s. Amount: %3$s %4$s.', 'kkhay'), esc_html(strtoupper($pay_token)), esc_html(strtoupper($network)), esc_html($amount), esc_html(strtoupper($pay_token)));
 
         if (!empty($tx_hash)) {
-            $note .= ' ' . sprintf(__('Tx Hash: %s', 'kkhay'), $tx_hash);
+            /* translators: %s: Blockchain transaction hash */
+            $note .= ' ' . sprintf(esc_html__('Tx Hash: %s', 'kkhay'), esc_html($tx_hash));
             $order->update_meta_data('_kkhay_tx_hash', $tx_hash);
         }
 
@@ -147,7 +156,7 @@ class WC_Kkhay_Webhook_Handler
         $target_status = $this->gateway->get_completed_order_status();
         if ($target_status === 'completed') {
             $order->payment_complete($tx_hash);
-            $order->update_status('completed', __('Order auto-completed after crypto settlement.', 'kkhay'));
+            $order->update_status('completed', esc_html__('Order auto-completed after crypto settlement.', 'kkhay'));
         } else {
             $order->payment_complete($tx_hash);
         }
@@ -158,7 +167,7 @@ class WC_Kkhay_Webhook_Handler
     private function handle_expired(WC_Order $order, array $data): void
     {
         if ($order->has_status(['pending', 'on-hold'])) {
-            $order->update_status('cancelled', __('K Khay: Crypto invoice expired without payment.', 'kkhay'));
+            $order->update_status('cancelled', esc_html__('K Khay: Crypto invoice expired without payment.', 'kkhay'));
             $this->gateway->log(sprintf('Order #%d marked cancelled (invoice expired).', $order->get_id()));
         }
     }
@@ -166,7 +175,7 @@ class WC_Kkhay_Webhook_Handler
     private function handle_cancelled(WC_Order $order, array $data): void
     {
         if ($order->has_status(['pending', 'on-hold'])) {
-            $order->update_status('cancelled', __('K Khay: Invoice was cancelled.', 'kkhay'));
+            $order->update_status('cancelled', esc_html__('K Khay: Invoice was cancelled.', 'kkhay'));
             $this->gateway->log(sprintf('Order #%d marked cancelled.', $order->get_id()));
         }
     }
@@ -175,11 +184,8 @@ class WC_Kkhay_Webhook_Handler
     {
         $paid   = $data['payAmount'] ?? $data['paidAmount'] ?? '0';
         $token  = $data['payToken'] ?? '';
-        $order->add_order_note(sprintf(
-            __('K Khay Alert: Underpayment detected. Customer paid %s %s. Please check with customer before fulfilling.', 'kkhay'),
-            $paid,
-            strtoupper($token)
-        ));
+        /* translators: 1: Paid amount, 2: Token symbol */
+        $order->add_order_note(sprintf(esc_html__('K Khay Alert: Underpayment detected. Customer paid %1$s %2$s. Please check with customer before fulfilling.', 'kkhay'), esc_html($paid), esc_html(strtoupper($token))));
         $this->gateway->log(sprintf('Order #%d underpaid warning recorded.', $order->get_id()));
     }
 
@@ -192,3 +198,7 @@ class WC_Kkhay_Webhook_Handler
     }
 }
 
+// Backward compatibility alias
+if (!class_exists('WC_Kkhay_Webhook_Handler')) {
+    class_alias('Kkhay_Webhook_Handler', 'WC_Kkhay_Webhook_Handler');
+}

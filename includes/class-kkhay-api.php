@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_Kkhay_API
+class Kkhay_API
 {
     private string $api_key;
     private string $base_url;
@@ -26,8 +26,8 @@ class WC_Kkhay_API
 
     private function get_endpoint_url(string $path): string
     {
-        $clean_path = str_starts_with($path, '/') ? $path : '/' . $path;
-        if (str_ends_with($this->base_url, '/api') || str_contains($this->base_url, 'api.')) {
+        $clean_path = (0 === strpos($path, '/')) ? $path : '/' . $path;
+        if (substr($this->base_url, -4) === '/api' || false !== strpos($this->base_url, 'api.')) {
             return $this->base_url . $clean_path;
         }
         return $this->base_url . '/api' . $clean_path;
@@ -45,7 +45,7 @@ class WC_Kkhay_API
     public function request(string $path, string $method = 'GET', ?array $body = null): array
     {
         if (empty($this->api_key)) {
-            throw new Exception(__('K Khay API Key is missing. Please configure your API key in WooCommerce settings.', 'kkhay'));
+            throw new Exception(esc_html__('K Khay API Key is missing. Please configure your API key in WooCommerce settings.', 'kkhay'));
         }
 
         $url = $this->get_endpoint_url($path);
@@ -86,7 +86,8 @@ class WC_Kkhay_API
             if ($this->debug && function_exists('wc_get_logger')) {
                 wc_get_logger()->error('K Khay Network Error: ' . $error_message, ['source' => 'kkhay']);
             }
-            throw new Exception(sprintf(__('Network error communicating with K Khay: %s', 'kkhay'), $error_message));
+            /* translators: %s: Network error message details */
+            throw new Exception(sprintf(esc_html__('Network error communicating with K Khay: %s', 'kkhay'), esc_html($error_message)));
         }
 
         $status_code = wp_remote_retrieve_response_code($response);
@@ -102,7 +103,8 @@ class WC_Kkhay_API
 
         if ($status_code >= 400) {
             $msg = is_array($decoded) ? ($decoded['message'] ?? $decoded['error'] ?? 'API error') : $raw_body;
-            throw new Exception(sprintf(__('K Khay API error (%d): %s', 'kkhay'), $status_code, $msg));
+            /* translators: 1: HTTP status code, 2: API error message */
+            throw new Exception(sprintf(esc_html__('K Khay API error (%1$d): %2$s', 'kkhay'), (int) $status_code, esc_html($msg)));
         }
 
         return is_array($decoded) ? $decoded : ['data' => $raw_body];
@@ -144,3 +146,7 @@ class WC_Kkhay_API
     }
 }
 
+// Backward compatibility alias
+if (!class_exists('WC_Kkhay_API')) {
+    class_alias('Kkhay_API', 'WC_Kkhay_API');
+}

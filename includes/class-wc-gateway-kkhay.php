@@ -9,15 +9,15 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class WC_Gateway_Kkhay extends WC_Payment_Gateway
+class Kkhay_WC_Gateway extends WC_Payment_Gateway
 {
-    private WC_Kkhay_API $api;
+    private Kkhay_API $api;
     private WC_Logger $logger;
 
     public function __construct()
     {
         $this->id                 = 'kkhay';
-        $this->icon               = apply_filters('woocommerce_kkhay_icon', KKHAY_WOOCOMMERCE_PLUGIN_URL . 'assets/images/kkhay-badge.svg');
+        $this->icon               = apply_filters('kkhay_gateway_icon', KKHAY_WOOCOMMERCE_PLUGIN_URL . 'assets/images/kkhay-badge.svg');
         $this->has_fields         = false;
         $this->method_title       = __('K Khay Crypto Gateway', 'kkhay');
         $this->method_description = __('Accept sovereign, non-custodial crypto payments (USDT, USDC, BNB, ETH on BSC, Polygon, Arbitrum, Base, Ethereum) directly to your self-hosted or custodial K Khay gateway.', 'kkhay');
@@ -37,7 +37,7 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
         $this->debug               = 'yes' === $this->get_option('debug', 'no');
 
         // Instantiate API client
-        $this->api = new WC_Kkhay_API($this->api_key, $this->base_url, 30, $this->debug);
+        $this->api = new Kkhay_API($this->api_key, $this->base_url, 30, $this->debug);
 
         // Actions
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, [$this, 'process_admin_options']);
@@ -107,7 +107,7 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
                 'title'       => __('Instant Payment Notification (IPN) URL', 'kkhay'),
                 'type'        => 'title',
                 'description' => sprintf(
-                    /* translators: %s: webhook url */
+                    /* translators: %s: Webhook callback URL */
                     __('Copy and paste this URL into your K Khay Merchant Dashboard under Webhook Settings:<br><code>%s</code>', 'kkhay'),
                     esc_url($webhook_url)
                 ),
@@ -120,25 +120,6 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
                 'description' => __('Logs can be viewed in WooCommerce &rarr; Status &rarr; Logs.', 'kkhay'),
             ],
         ];
-    }
-
-    /**
-     * Render payment fields at checkout.
-     */
-    public function payment_fields(): void
-    {
-        if ($this->description) {
-            echo '<div class="kkhay-payment-description">' . wp_kses_post(wpautop(wptexturize($this->description))) . '</div>';
-        }
-
-        echo '<div class="kkhay-supported-crypto">';
-        echo '<span class="kkhay-crypto-pill">USDT</span>';
-        echo '<span class="kkhay-crypto-pill secondary">USDC</span>';
-        echo '<span class="kkhay-crypto-pill accent">BNB</span>';
-        echo '<span class="kkhay-crypto-pill secondary">ETH</span>';
-        echo '<span class="kkhay-crypto-pill">BSC / Polygon / Arbitrum / Base</span>';
-        echo '</div>';
-        echo '<div class="kkhay-instant-badge">⚡ Instant On-Chain Verification</div>';
     }
 
     /**
@@ -166,7 +147,7 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
     {
         $order = wc_get_order($order_id);
         if (!$order) {
-            wc_add_notice(__('Unable to find order. Please try again.', 'kkhay'), 'error');
+            wc_add_notice(esc_html__('Unable to find order. Please try again.', 'kkhay'), 'error');
             return ['result' => 'fail'];
         }
 
@@ -178,12 +159,17 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
             $return_url  = $this->get_return_url($order);
             $cancel_url  = $order->get_cancel_order_url();
 
+            /* translators: 1: Order number, 2: Site name */
+            $order_title = sprintf(esc_html__('Order #%1$s on %2$s', 'kkhay'), esc_html($order->get_order_number()), esc_html(get_bloginfo('name')));
+            /* translators: 1: Order number, 2: Item count */
+            $order_desc  = sprintf(esc_html__('Payment for order #%1$s (%2$d item(s))', 'kkhay'), esc_html($order->get_order_number()), (int) $order->get_item_count());
+
             $payload = [
                 'priceAmount'   => $amount,
                 'priceCurrency' => strtoupper($currency),
                 'orderId'       => (string) $order->get_id(),
-                'title'         => sprintf(__('Order #%s on %s', 'kkhay'), $order->get_order_number(), get_bloginfo('name')),
-                'description'   => sprintf(__('Payment for order #%s (%d item(s))', 'kkhay'), $order->get_order_number(), $order->get_item_count()),
+                'title'         => $order_title,
+                'description'   => $order_desc,
                 'redirectUrl'   => $return_url,
                 'cancelUrl'     => $cancel_url,
                 'ipnUrl'        => $webhook_url,
@@ -205,7 +191,7 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
             $hosted_url = $invoice['hostedUrl'] ?? $invoice['hosted_url'] ?? $invoice['checkoutUrl'] ?? null;
 
             if (empty($invoice_id) || empty($hosted_url)) {
-                throw new Exception(__('Invalid invoice response received from K Khay gateway.', 'kkhay'));
+                throw new Exception(esc_html__('Invalid invoice response received from K Khay gateway.', 'kkhay'));
             }
 
             // Store metadata on order
@@ -214,7 +200,8 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
             $order->save();
 
             // Set order status to pending payment
-            $order->update_status('pending', sprintf(__('Awaiting K Khay crypto payment. Invoice ID: %s', 'kkhay'), $invoice_id));
+            /* translators: %s: K Khay invoice ID */
+            $order->update_status('pending', sprintf(esc_html__('Awaiting K Khay crypto payment. Invoice ID: %s', 'kkhay'), esc_html($invoice_id)));
 
             // Reduce cart stock
             wc_reduce_stock_levels($order->get_id());
@@ -230,7 +217,8 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
             ];
         } catch (Exception $e) {
             $this->log('Payment error: ' . $e->getMessage(), 'error');
-            wc_add_notice(sprintf(__('Payment failed: %s', 'kkhay'), $e->getMessage()), 'error');
+            /* translators: %s: Payment failure error message */
+            wc_add_notice(sprintf(esc_html__('Payment failed: %s', 'kkhay'), esc_html($e->getMessage())), 'error');
             return ['result' => 'fail'];
         }
     }
@@ -240,7 +228,7 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
      */
     public function handle_webhook(): void
     {
-        $handler = new WC_Kkhay_Webhook_Handler($this);
+        $handler = new Kkhay_Webhook_Handler($this);
         $handler->handle();
     }
 
@@ -265,3 +253,7 @@ class WC_Gateway_Kkhay extends WC_Payment_Gateway
     }
 }
 
+// Backward compatibility alias
+if (!class_exists('WC_Gateway_Kkhay')) {
+    class_alias('Kkhay_WC_Gateway', 'WC_Gateway_Kkhay');
+}

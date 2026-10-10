@@ -2,7 +2,7 @@
 Contributors: boboaungdev, kkhay
 Donate link: https://kkhay.com
 Tags: crypto, payment gateway, woocommerce, usdt, usdc
-Requires at least: 5.8
+Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
 Stable tag: 1.0.0
