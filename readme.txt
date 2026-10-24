@@ -1,5 +1,5 @@
 === Kkhay ===
-Contributors: boboaungdev, kkhay
+Contributors: boboaungdev
 Donate link: https://kkhay.com
 Tags: crypto, payment gateway, woocommerce, usdt, usdc
 Requires at least: 6.0
