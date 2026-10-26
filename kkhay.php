@@ -3,7 +3,7 @@
  * Plugin Name: Kkhay
  * Plugin URI: https://kkhay.com
  * Description: Accept non-custodial and custodial crypto payments (USDT, USDC, BNB, ETH on BSC, Polygon, Arbitrum, Base, Ethereum) directly in your store with zero chargebacks.
- * Version: 1.0.0
+ * Version: 1.0.4
  * Author: Bo Bo
  * Author URI: https://github.com/boboaungdev
  * License: MIT
@@ -22,7 +22,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('KKHAY_VERSION', '1.0.0');
+define('KKHAY_VERSION', '1.0.4');
 define('KKHAY_PLUGIN_FILE', __FILE__);
 define('KKHAY_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('KKHAY_PLUGIN_URL', plugin_dir_url(__FILE__));

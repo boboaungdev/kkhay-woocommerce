@@ -26,16 +26,16 @@ Accept non-custodial and custodial crypto payments (USDT, USDC, BNB, ETH on BSC,
 ## 📦 Installation
 
 ### Method 1: Upload via WordPress Admin (Recommended)
-1. Download the latest `kkhay-woocommerce.zip` release.
+1. Download the latest `kkhay.zip` release.
 2. In WordPress Admin, navigate to **Plugins &rarr; Add New &rarr; Upload Plugin**.
 3. Choose the `.zip` file and click **Install Now**.
 4. Click **Activate Plugin**.
 
 ### Method 2: Manual Installation via FTP / SSH
-1. Clone or extract this repository into `/wp-content/plugins/kkhay-woocommerce/`:
+1. Clone or extract this repository into `/wp-content/plugins/kkhay/`:
    ```bash
    cd /path/to/wordpress/wp-content/plugins/
-   git clone https://github.com/boboaungdev/kkhay-woocommerce.git
+   git clone https://github.com/boboaungdev/kkhay-woocommerce.git kkhay
    ```
 2. In WordPress Admin, go to **Plugins** and click **Activate** under **K Khay Sovereign Crypto Gateway for WooCommerce**.
 
@@ -49,7 +49,7 @@ Accept non-custodial and custodial crypto payments (USDT, USDC, BNB, ETH on BSC,
    - **Enable/Disable**: Check to activate the gateway on checkout.
    - **Title**: Payment method title shown to buyers (e.g. `Crypto (USDT, USDC, BNB, ETH via K Khay)`).
    - **Description**: Payment instructions shown when selected.
-   - **Merchant API Key**: Paste your secret API key (`kkhay_live_...`) from your [K Khay Dashboard](https://kkhay.com).
+   - **Gateway API Key**: Paste your secret API key (`kkhay_live_...`) from your [K Khay Dashboard](https://kkhay.com).
    - **Webhook / IPN Secret**: Enter your webhook secret key used to verify cryptographic signatures.
    - **Gateway API Base URL**: Defaults to `https://api.kkhay.com` (change only if self-hosting your K Khay node).
    - **Order Status on Payment**: Choose `Processing` (standard) or `Completed` (digital downloads).

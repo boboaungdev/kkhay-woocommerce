@@ -1,11 +1,11 @@
 === Kkhay ===
-Contributors: boboaungdev
+Contributors: boboaungdev, kkhay
 Donate link: https://kkhay.com
 Tags: crypto, payment gateway, woocommerce, usdt, usdc
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.4
 License: MIT
 License URI: https://opensource.org/licenses/MIT
 
@@ -33,7 +33,7 @@ Accept payments directly to your wallet in stablecoins and popular cryptocurrenc
 This plugin relies on an external service — the **K Khay Payment Gateway API** (`https://api.kkhay.com` or your configured self-hosted gateway instance) — to create cryptocurrency payment invoices, track real-time blockchain settlement, and verify payment webhook signatures.
 
 * **What the service is**: K Khay Sovereign Crypto Gateway provides non-custodial cryptocurrency checkout processing (USDT, USDC, BNB, ETH on BSC, Polygon, Arbitrum, Base, and Ethereum).
-* **What data is sent**: When a customer selects K Khay at checkout and places an order, the plugin transmits order details including the order ID, payment amount, currency, return/cancel URLs, and your merchant API credentials to initiate the checkout session. Sensitive customer payment credentials (such as credit card numbers or private keys) are never requested, stored, or transmitted.
+* **What data is sent**: When a customer selects K Khay at checkout and places an order, the plugin transmits order details including the order ID, payment amount, currency, return/cancel URLs, and your gateway API credentials to initiate the checkout session. Sensitive customer payment credentials (such as credit card numbers or private keys) are never requested, stored, or transmitted.
 * **When data is sent**: Data is transmitted when a customer initiates payment at checkout, when invoice status is queried, and when receiving webhook payment callbacks.
 * **Service Provider**: K Khay ([https://kkhay.com](https://kkhay.com))
 * **Terms of Service**: [https://kkhay.com/terms](https://kkhay.com/terms)
@@ -45,7 +45,7 @@ This plugin relies on an external service — the **K Khay Payment Gateway API**
 2. Activate the plugin through the **Plugins** menu in WordPress.
 3. Navigate to **WooCommerce &rarr; Settings &rarr; Payments**.
 4. Click on **K Khay Crypto Gateway** to configure settings.
-5. Enter your **Merchant API Key** and **Webhook / IPN Secret** from your [K Khay Dashboard](https://kkhay.com).
+5. Enter your **Gateway API Key** and **Webhook / IPN Secret** from your [K Khay Dashboard](https://kkhay.com).
 6. Copy the displayed IPN URL into your K Khay Dashboard under Webhook Settings.
 7. Save changes and start accepting crypto payments!
 
@@ -61,9 +61,15 @@ Yes. K Khay declares official compatibility with HPOS custom order tables.
 No. Blockchain payments are irreversible, completely eliminating fraudulent chargebacks.
 
 = Where do I get my API Key? =
-You can generate your merchant API keys and IPN webhook secret from your [K Khay Merchant Dashboard](https://kkhay.com).
+You can generate your gateway API keys and IPN webhook secret from your [K Khay Gateway Dashboard](https://kkhay.com).
 
 == Changelog ==
+
+= 1.0.4 =
+* Multi-chain settlement expansion (USDT, USDC, BTC, ETH, SOL, TON, BNB, TRX, DOGE, XRP, LTC across 190+ chains).
+* Updated API client to standard `/v1/gateway/invoices` endpoints with dual response unwrapping.
+* Support for explicit `ipnCallbackUrl` invoice payload binding.
+* Enhanced Gateway naming convention and documentation.
 
 = 1.0.0 =
 * Initial release of the official K Khay Crypto Payment Gateway for WooCommerce.

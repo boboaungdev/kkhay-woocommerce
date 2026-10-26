@@ -73,9 +73,9 @@ class Kkhay_WC_Gateway extends WC_Payment_Gateway
                 'default'     => __('Pay securely with cryptocurrency across multiple blockchains. Fast, zero chargebacks, and instant settlement.', 'kkhay'),
             ],
             'api_key' => [
-                'title'       => __('Merchant API Key', 'kkhay'),
+                'title'       => __('Gateway API Key', 'kkhay'),
                 'type'        => 'password',
-                'description' => __('Your secret merchant API key (starts with kkhay_live_ or kkhay_test_). Retrieve from your K Khay dashboard.', 'kkhay'),
+                'description' => __('Your secret gateway API key (starts with kkhay_live_ or kkhay_test_). Retrieve from your K Khay dashboard.', 'kkhay'),
                 'default'     => '',
                 'desc_tip'    => true,
             ],
@@ -108,7 +108,7 @@ class Kkhay_WC_Gateway extends WC_Payment_Gateway
                 'type'        => 'title',
                 'description' => sprintf(
                     /* translators: %s: Webhook callback URL */
-                    __('Copy and paste this URL into your K Khay Merchant Dashboard under Webhook Settings:<br><code>%s</code>', 'kkhay'),
+                    __('Copy and paste this URL into your K Khay Gateway Dashboard under Webhook Settings:<br><code>%s</code>', 'kkhay'),
                     esc_url($webhook_url)
                 ),
             ],
@@ -165,15 +165,16 @@ class Kkhay_WC_Gateway extends WC_Payment_Gateway
             $order_desc  = sprintf(esc_html__('Payment for order #%1$s (%2$d item(s))', 'kkhay'), esc_html($order->get_order_number()), (int) $order->get_item_count());
 
             $payload = [
-                'priceAmount'   => $amount,
-                'priceCurrency' => strtoupper($currency),
-                'orderId'       => (string) $order->get_id(),
-                'title'         => $order_title,
-                'description'   => $order_desc,
-                'redirectUrl'   => $return_url,
-                'cancelUrl'     => $cancel_url,
-                'ipnUrl'        => $webhook_url,
-                'metadata'      => [
+                'priceAmount'    => $amount,
+                'priceCurrency'  => strtoupper($currency),
+                'orderId'        => (string) $order->get_id(),
+                'title'          => $order_title,
+                'description'    => $order_desc,
+                'redirectUrl'    => $return_url,
+                'cancelUrl'      => $cancel_url,
+                'ipnCallbackUrl' => $webhook_url,
+                'ipnUrl'         => $webhook_url,
+                'metadata'       => [
                     'source'           => 'woocommerce',
                     'order_id'         => $order->get_id(),
                     'order_key'        => $order->get_order_key(),
@@ -185,7 +186,7 @@ class Kkhay_WC_Gateway extends WC_Payment_Gateway
             $this->log(sprintf('Creating invoice for Order #%d: Total %s %s', $order->get_id(), $amount, $currency));
 
             $response = $this->api->create_invoice($payload);
-            $invoice  = $response['data'] ?? $response;
+            $invoice  = $response['invoice'] ?? $response['data'] ?? $response;
 
             $invoice_id = $invoice['id'] ?? $invoice['invoiceId'] ?? null;
             $hosted_url = $invoice['hostedUrl'] ?? $invoice['hosted_url'] ?? $invoice['checkoutUrl'] ?? null;

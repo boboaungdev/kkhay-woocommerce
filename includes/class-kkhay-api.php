@@ -53,7 +53,7 @@ class Kkhay_API
         $headers = [
             'Accept'       => 'application/json',
             'x-api-key'    => $this->api_key,
-            'User-Agent'   => 'kkhay/1.0.0 (WordPress/' . get_bloginfo('version') . '; WooCommerce/' . (defined('WC_VERSION') ? WC_VERSION : 'unknown') . ')',
+            'User-Agent'   => 'kkhay/1.0.4 (WordPress/' . get_bloginfo('version') . '; WooCommerce/' . (defined('WC_VERSION') ? WC_VERSION : 'unknown') . ')',
         ];
 
         $args = [
@@ -119,7 +119,7 @@ class Kkhay_API
      */
     public function create_invoice(array $payload): array
     {
-        return $this->request('/v1/merchant/invoices', 'POST', $payload);
+        return $this->request('/v1/gateway/invoices', 'POST', $payload);
     }
 
     /**
@@ -131,7 +131,7 @@ class Kkhay_API
      */
     public function get_invoice(string $invoice_id): array
     {
-        return $this->request('/v1/merchant/invoices/' . rawurlencode(trim($invoice_id)), 'GET');
+        return $this->request('/v1/gateway/invoices/' . rawurlencode(trim($invoice_id)), 'GET');
     }
 
     /**

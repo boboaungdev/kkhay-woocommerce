@@ -1,6 +1,8 @@
 name: Release & Package Plugin
 
 on:
+  release:
+    types: [published]
   push:
     tags:
       - "v*"
@@ -52,10 +54,27 @@ jobs:
           name: kkhay-zip
           path: kkhay.zip
 
-      - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Create or Upload to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'release'
         uses: softprops/action-gh-release@v2
         with:
           files: kkhay.zip
           generate_release_notes: true
+
+  deploy-wporg:
+    name: Deploy to WordPress.org SVN
+    needs: package
+    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to WordPress.org
+        if: env.SVN_PASSWORD != ''
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME || 'boboaungdev' }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: kkhay
 
